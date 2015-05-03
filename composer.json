@@ -1,0 +1,42 @@
+{
+  "name": "Hanibal4nothing/BaseModule",
+  "description": "ZF2 Module with simple functions to work better with the framework",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "zf2",
+    "zend",
+    "module",
+    "base",
+    "default",
+    "helper"
+  ],
+  "homepage": "https://github.com/Hanibal4nothing/BaseModule",
+  "authors": [
+    {
+      "name": "Felix Buchheim",
+      "email": "hanibal4nothing@gmail.com",
+      "homepage": "http://www.hanibal.org"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.3",
+    "zendframework/zendframework": "2.4.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4"
+  },
+  "autoload": {
+    "psr-0": {
+      "BaseModule": "src/"
+    },
+    "classmap": [
+      "./"
+    ]
+  },
+  "autoload-dev": {
+    "psr-0": {
+      "BaseModuleTest": "test/"
+    }
+  }
+}
