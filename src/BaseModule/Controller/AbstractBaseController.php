@@ -22,7 +22,6 @@ use Zend\View\Model\JsonModel;
  * @package   BaseModule\Controller
  * @copyright Felix Buchheim
  * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
  */
 abstract class AbstractBaseController extends AbstractActionController
 {
