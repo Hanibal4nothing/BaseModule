@@ -11,8 +11,8 @@ namespace BaseModule;
 
 use BaseModule\Helper\EnvironmentHelper;
 use Zend\Config\Config;
-use Zend\Di\ServiceLocator;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * @package   BaseModule
@@ -50,7 +50,7 @@ class Module
      */
     public function getConfig()
     {
-        return require __DIR__ . '../../config/module.config.php';
+        return require __DIR__ . '/../../config/module.config.php';
     }
 
     /**
@@ -71,11 +71,11 @@ class Module
     /**
      * prepare the EnvironmentHelper
      *
-     * @param ServiceLocator $oSm
+     * @param ServiceManager $oSm
      *
      * @return $this
      */
-    protected function fetchEnvironment(ServiceLocator $oSm)
+    protected function fetchEnvironment(ServiceManager $oSm)
     {
         $aConfig = $oSm->get('config');
         EnvironmentHelper::fetchEnvironment(new Config($aConfig['baseModuleConfig']['environmentHelper']));

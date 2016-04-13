@@ -104,7 +104,7 @@ class EnvironmentHelper
      *
      * @return bool
      */
-    protected function fetchEnvironmentByUrl()
+    static protected function fetchEnvironmentByUrl()
     {
         $sQueryString = $_SERVER['QUERY_STRING'];
         $aMatches = array();
@@ -134,7 +134,7 @@ class EnvironmentHelper
      *
      * @return bool
      */
-    protected function fetchEnvironmentByServer(Config $oConfig)
+    static protected function fetchEnvironmentByServer(Config $oConfig)
     {
         $sServerAddress = $_SERVER['SERVER_ADDR'];
         $bEnvironmentFetched = false;
