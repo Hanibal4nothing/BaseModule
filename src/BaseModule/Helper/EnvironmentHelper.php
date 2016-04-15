@@ -106,7 +106,7 @@ class EnvironmentHelper
      */
     static protected function fetchEnvironmentByUrl()
     {
-        $sQueryString = $_SERVER['QUERY_STRING'];
+        $sQueryString = (false === empty($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '';
         $aMatches = array();
         $bEnvironment = false;
 
@@ -136,7 +136,7 @@ class EnvironmentHelper
      */
     static protected function fetchEnvironmentByServer(Config $oConfig)
     {
-        $sServerAddress = $_SERVER['SERVER_ADDR'];
+        $sServerAddress = (false === empty($_SERVER['SERVER_ADDR'])) ? $_SERVER['SERVER_ADDR'] : '';
         $bEnvironmentFetched = false;
 
         if (true === $oConfig->offsetExists('devServerAddress') and $oConfig->get('devServerAddress') === $sServerAddress) {
