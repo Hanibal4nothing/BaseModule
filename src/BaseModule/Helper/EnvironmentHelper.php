@@ -73,30 +73,48 @@ class EnvironmentHelper
      */
     static public function fetchEnvironment(Config $oConfig)
     {
-        self::$environment = null;
+        self::$environment   = null;
         $bEnvironmentFetched = false;
 
         if (true === $oConfig->offsetExists('enableSwitchViaUrl') and true === $oConfig->get('enableSwitchViaUrl')) {
             $bEnvironmentFetched = self::fetchEnvironmentByUrl();
         }
         if (false === $bEnvironmentFetched) {
-            if (true === $oConfig->offsetExists('hardEnvironment') and $oConfig->get('hardEnvironment') !== self::DISABLE_HARD_ENVIRONMENT){
-                self::$environment = $oConfig->get('hardEnvironment');
+            if (true === $oConfig->offsetExists('hardEnvironment') and $oConfig->get('hardEnvironment') !== self::DISABLE_HARD_ENVIRONMENT) {
+                self::$environment   = $oConfig->get('hardEnvironment');
                 $bEnvironmentFetched = true;
             } else {
                 $bEnvironmentFetched = self::fetchEnvironmentByServer($oConfig);
             }
         }
 
-        if(false === $bEnvironmentFetched) {
+        if (false === $bEnvironmentFetched) {
             self::$environment = $oConfig->get('inDoubt');
         }
 
-        if (self::$environment !== self::PRODUCTION and self::$environment !== self::DEVELOPMENT){
+        if (self::$environment !== self::PRODUCTION and self::$environment !== self::DEVELOPMENT) {
             throw new \RuntimeException('Coud not estimate environment');
         }
+        
+        self::setErrorReporting($oConfig);
 
         return $bEnvironmentFetched;
+    }
+
+    /**
+     * Set the errorReporting in the ini
+     *
+     * @param Config $oConfig
+     *
+     * @return bool
+     */
+    static protected function setErrorReporting(Config $oConfig)
+    {
+        $environment = self::$environment;
+        error_reporting($oConfig->get('environments')->$environment->errorReporting);
+        ini_set('display_errors', $oConfig->get('environments')->$environment->displayErrors);
+
+        return true;
     }
 
     /**
@@ -107,18 +125,18 @@ class EnvironmentHelper
     static protected function fetchEnvironmentByUrl()
     {
         $sQueryString = (false === empty($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '';
-        $aMatches = array();
+        $aMatches     = array();
         $bEnvironment = false;
 
         if (1 === preg_match('/dev=([^&]*)/', $sQueryString, $aMatches)) {
-            switch($aMatches[1]){
+            switch ($aMatches[1]) {
                 case '1':
                     self::$environment = self::DEVELOPMENT;
-                    $bEnvironment = true;
+                    $bEnvironment      = true;
                     break;
                 case '0':
                     self::$environment = self::PRODUCTION;
-                    $bEnvironment = true;
+                    $bEnvironment      = true;
                     break;
                 default:
             }
@@ -136,16 +154,16 @@ class EnvironmentHelper
      */
     static protected function fetchEnvironmentByServer(Config $oConfig)
     {
-        $sServerAddress = (false === empty($_SERVER['SERVER_ADDR'])) ? $_SERVER['SERVER_ADDR'] : '';
+        $sServerAddress      = (false === empty($_SERVER['SERVER_ADDR'])) ? $_SERVER['SERVER_ADDR'] : '';
         $bEnvironmentFetched = false;
 
         if (true === $oConfig->offsetExists('devServerAddress') and $oConfig->get('devServerAddress') === $sServerAddress) {
-            self::$environment = self::DEVELOPMENT;
+            self::$environment   = self::DEVELOPMENT;
             $bEnvironmentFetched = true;
         }
 
         if (true === $oConfig->offsetExists('productionServerAddress') and $oConfig->get('productionServerAddress') === $sServerAddress) {
-            self::$environment = self::PRODUCTION;
+            self::$environment   = self::PRODUCTION;
             $bEnvironmentFetched = true;
         }
 

@@ -12,6 +12,7 @@ use BaseModule\Helper\AppConfig;
 use BaseModule\Logger\ErrorHandler;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use Doctrine\ORM\EntityManager;
 
 /**
  * the sense of this abstract-controller is to:
@@ -91,7 +92,7 @@ abstract class AbstractBaseController extends AbstractActionController
     /**
      * return the EntityManager
      *
-     * @return Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEm()
     {

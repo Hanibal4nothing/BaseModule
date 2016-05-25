@@ -37,6 +37,20 @@ return array(
              * dev=1 to activate the development
              */
             'enableSwitchViaUrl' => true,
+
+            /**
+             * set this options on module bootstrap for the estimated environment
+             */
+            'environments' => array(
+                \BaseModule\Helper\EnvironmentHelper::PRODUCTION => array(
+                    'displayErrors' => 0,
+                    'errorReporting' => E_CORE_ERROR
+                ),
+                \BaseModule\Helper\EnvironmentHelper::DEVELOPMENT => array(
+                    'displayErrors' => 1,
+                    'errorReporting' => E_ALL
+                ),
+            )
         )
     )
 );
