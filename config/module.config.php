@@ -4,28 +4,18 @@
  *
  * @copyright Felix Buchheim
  * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
  */
 
 return array(
     'service_manager' => array(
         'factories'    => array(
-            'ZendLog'                        => function () {
-                $sFilename = 'log_' . date('d-m-Y') . '.txt';
-                $oLogger   = new \Zend\Log\Logger();
-                $oWriter   = new \Zend\Log\Writer\Stream('./data/log/' . $sFilename);
-                $oLogger->addWriter($oWriter);
-
-                return $oLogger;
-            },
             'BaseModule\Logger\ErrorHandler' => function (
                 \Zend\ServiceManager\ServiceLocatorInterface $oServiceManager
             ) {
-                $oLogger = $oServiceManager->get('ZendLog');
-                /* @var Zend\Log\Logger $oLogger */
-                $oService = new \BaseModule\Logger\ErrorHandler($oLogger);
+                $aConfig  = $oServiceManager->get('config');
+                $aOptions = $aConfig['baseModule']['errorHandler'];
 
-                return $oService;
+                return \BaseModule\Factory\ErrorHandler::factory($aOptions);
             },
         ),
         'invokables'   => array(

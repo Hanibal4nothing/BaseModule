@@ -1,24 +1,19 @@
 <?php
-/**
- * Module.php
- *
- * @copyright Felix Buchheim
- * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
- */
 
 namespace BaseModule;
 
 use BaseModule\Helper\EnvironmentHelper;
+use BaseModule\Logger\ErrorHandler;
+use BaseModule\Factory\ErrorHandler as ErrorHandlerFactory;
 use Zend\Config\Config;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceManager;
 
 /**
- * @package   BaseModule
+ * Module.php
+ *
  * @copyright Felix Buchheim
  * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
  */
 class Module
 {
@@ -30,17 +25,28 @@ class Module
         $oApp            = $oEvent->getTarget();
         $oEventManager   = $oApp->getEventManager();
         $oServiceManager = $oApp->getServiceManager();
+        $oErrorService   = $oServiceManager->get('BaseModule\Logger\ErrorHandler');
+        /* @var ErrorHandler $oErrorService */
+        $aConfig = $oServiceManager->get('config');
 
-        /**
-         * Log every none-catched exception
-         */
-        $oEventManager->attach('dispatch.error', function ($oEvent) use ($oServiceManager) {
-            $oException = $oEvent->getResult()->exception;
-            if (true === isset ($oException)) {
-                $oErrorService = $oServiceManager->get('BaseModule\Logger\ErrorHandler');
-                $oErrorService->log($oException);
-            }
-        });
+        if (true === $aConfig['baseModule']['errorHandler'][ErrorHandlerFactory::SYS_LOGGER_LOGGER]['enabled']) {
+            $oErrorService->registerAsErrorHandler();
+        }
+        if (true === $aConfig['baseModule']['errorHandler'][ErrorHandlerFactory::FATAL_ERROR_LOGGER]['enabled']) {
+            $oErrorService->registerFatalErrorHandler();
+        }
+        if (true === $aConfig['baseModule']['errorHandler'][ErrorHandlerFactory::EXCEPTION_LOGGER]['enabled']) {
+            /**
+             * Log every none-catched exception
+             */
+            $oEventManager->attach('dispatch.error', function ($oEvent) use ($oErrorService) {
+                $oException = $oEvent->getResult()->exception;
+                if (true === isset ($oException)) {
+                    $oErrorService->log($oException);
+                }
+            });
+
+        }
 
         $this->fetchEnvironment($oServiceManager);
     }
@@ -61,7 +67,7 @@ class Module
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    __NAMESPACE__          => __DIR__ . '/src/' . __NAMESPACE__,
                     __NAMESPACE__ . 'Test' => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
@@ -78,7 +84,7 @@ class Module
     protected function fetchEnvironment(ServiceManager $oSm)
     {
         $aConfig = $oSm->get('config');
-        EnvironmentHelper::fetchEnvironment(new Config($aConfig['baseModuleConfig']['environmentHelper']));
+        EnvironmentHelper::fetchEnvironment(new Config($aConfig['baseModule']['environmentHelper']));
 
         return $this;
     }

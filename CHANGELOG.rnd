@@ -1,5 +1,8 @@
 # CHANGELOG
 This project use Semantic Versioning -> http://semver.org/spec/v2.0.0.html
 
-## [1.0.0]
+## [0.2.0]
+- improve ErrorHandler to log exceptions, fatalErrors and sysLogs
+
+## [0.1.0]
 - init

@@ -1,10 +1,4 @@
 <?php
-/**
- * BaseController.php
- *
- * @copyright Felix Buchheim
- * @version   $Id: $
- */
 
 namespace BaseModule\Controller;
 
@@ -12,6 +6,7 @@ use BaseModule\Helper\AppConfig;
 use BaseModule\Logger\ErrorHandler;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use Doctrine\ORM\EntityManager;
 
 /**
  * the sense of this abstract-controller is to:
@@ -39,6 +34,7 @@ abstract class AbstractBaseController extends AbstractActionController
      * Return the current $_POST
      *
      * @param string|null $sKey
+     *
      * @throws \InvalidArgumentException
      *
      * @return mixed
@@ -48,8 +44,7 @@ abstract class AbstractBaseController extends AbstractActionController
         $this->checkIfKeyIsValid($sKey);
         if ($sKey === null) {
             $mReturn = $this->getRequest()->getPost();
-        }
-        else {
+        } else {
             $mReturn = $this->getRequest()->getPost($sKey);
         }
 
@@ -68,8 +63,7 @@ abstract class AbstractBaseController extends AbstractActionController
         $this->checkIfKeyIsValid($sKey);
         if ($sKey === null) {
             $mReturn = $this->getRequest()->getFiles();
-        }
-        else {
+        } else {
             $mReturn = $this->getRequest()->getFiles($sKey);
         }
 
@@ -91,7 +85,7 @@ abstract class AbstractBaseController extends AbstractActionController
     /**
      * return the EntityManager
      *
-     * @return Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEm()
     {
@@ -109,9 +103,10 @@ abstract class AbstractBaseController extends AbstractActionController
     protected function getRepo($sRepoName)
     {
         $oEntityManager = $this->getEm();
-        if (false === isset($oEntityManager)){
+        if (false === isset($oEntityManager)) {
             throw new \UnexpectedValueException('Doctrine is not loaded');
         }
+
         return $this->getEm()->getRepository($sRepoName);
     }
 
@@ -149,6 +144,7 @@ abstract class AbstractBaseController extends AbstractActionController
      * check if the given key is numeric or a string
      *
      * @param string $sKey
+     *
      * @throws \InvalidArgumentException
      *
      * @return bool

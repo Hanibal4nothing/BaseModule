@@ -1,10 +1,4 @@
 <?php
-/**
- * AppConfig.php
- *
- * @copyright Felix Buchheim
- * @version   $Id: $
- */
 
 namespace BaseModule\Helper;
 
@@ -16,10 +10,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * to difference the zf2 config with routes etc, and the application-config for the usage
  *
- * @package   BaseModule\Helper
  * @copyright Felix Buchheim
  * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
  */
 class AppConfig
 {
@@ -28,7 +20,7 @@ class AppConfig
      *
      * @var string
      */
-    const CONFIG_KEY = 'baseModuleConfigKey';
+    const CONFIG_KEY = 'applicationConfig';
 
     /**
      * @var Config
