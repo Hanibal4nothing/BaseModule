@@ -1,10 +1,4 @@
 <?php
-/**
- * EnvironmentHelper.php
- *
- * @copyright Felix Buchheim
- * @version   $Id: $
- */
 
 namespace BaseModule\Helper;
 
@@ -13,10 +7,8 @@ use Zend\Config\Config;
 /**
  * To different the environment
  *
- * @package   BaseModule\Helper
  * @copyright Felix Buchheim
  * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
  */
 class EnvironmentHelper
 {

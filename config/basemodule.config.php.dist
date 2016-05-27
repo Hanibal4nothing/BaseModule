@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'baseModuleConfig' => array(
+    'baseModule' => array(
         'environmentHelper' => array(
             /**
              * ServerAddress for development
@@ -16,7 +16,7 @@ return array(
             /**
              * are the serverAddresses doesn't match, the environment will be the given value
              */
-            'inDoubt'       => \BaseModule\Helper\EnvironmentHelper::PRODUCTION,
+            'inDoubt'                 => \BaseModule\Helper\EnvironmentHelper::PRODUCTION,
 
             /**
              * Set the environment hard to this option
@@ -36,20 +36,53 @@ return array(
              * dev=0 to activate the production
              * dev=1 to activate the development
              */
-            'enableSwitchViaUrl' => true,
+            'enableSwitchViaUrl'      => true,
 
             /**
              * set this options on module bootstrap for the estimated environment
              */
-            'environments' => array(
-                \BaseModule\Helper\EnvironmentHelper::PRODUCTION => array(
-                    'displayErrors' => 0,
+            'environments'            => array(
+                \BaseModule\Helper\EnvironmentHelper::PRODUCTION  => array(
+                    'displayErrors'  => 0,
                     'errorReporting' => E_CORE_ERROR
                 ),
                 \BaseModule\Helper\EnvironmentHelper::DEVELOPMENT => array(
-                    'displayErrors' => 1,
+                    'displayErrors'  => 1,
                     'errorReporting' => E_ALL
                 ),
+            )
+        ),
+
+        /**
+         * Settings for error handling
+         */
+        'errorHandler'      => array(
+            /**
+             * log not uncaught exceptions
+             */
+            \BaseModule\Factory\ErrorHandler::EXCEPTION_LOGGER   => array(
+                'enabled' => true,
+                'path'    => './data/log/exception/'
+            ),
+            /**
+             * log fatal errors
+             */
+            \BaseModule\Factory\ErrorHandler::FATAL_ERROR_LOGGER => array(
+                'enabled' => true,
+                'path'    => './data/log/fatalError/'
+            ),
+            /**
+             * log sysLog
+             */
+            \BaseModule\Factory\ErrorHandler::SYS_LOGGER_LOGGER  => array(
+                'enabled' => true,
+                'paths'   => array(
+                    /**
+                     * for every level you can choose the path
+                     * you can concat different levels like "E_ERROR | E_WARNING | E_PARSE" ...  and so on
+                     */
+                    E_ALL => './data/log/sysLog/'
+                )
             )
         )
     )

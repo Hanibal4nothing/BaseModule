@@ -1,20 +1,11 @@
 <?php
-/**
- * AbstractBaseForm.php
- *
- * @copyright Felix Buchheim
- * @version   $Id: $
- */
-
 namespace BaseModule\Form;
 
 use Zend\Form\Form;
 
 /**
- * @package   BaseModule\Form
  * @copyright Felix Buchheim
  * @author    Felix Buchheim <hanibal4nothing@gmail.com>
- * @version   $Id: $
  */
 abstract class AbstractBaseForm extends Form
 {
